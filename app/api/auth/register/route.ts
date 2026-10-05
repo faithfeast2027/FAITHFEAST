@@ -1,75 +1,56 @@
-'use client';
+import { NextRequest, NextResponse } from 'next/server';
+import { hash } from 'bcryptjs';
+import { PrismaClient } from '@prisma/client';
 
-import { useEffect, useState } from 'react';
+const prisma = new PrismaClient();
 
-type Earnings = {
-  period: string;
-  tips: number;
-  deliveryFees: number;
-  total: number;
-};
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { email, password, name, role } = body;
 
-export default function DriverPage() {
-  const [earnings, setEarnings] = useState<Earnings[]>([]);
+    // Validate input
+    if (!email || !password || !name) {
+      return NextResponse.json(
+        { error: 'Email, password, and name are required' },
+        { status: 400 }
+      );
+    }
 
-  useEffect(() => {
-    fetch('/api/driver/earnings')
-      .then((response) => response.json())
-      .then((data) => setEarnings(data.earnings || []));
-  }, []);
+    // Check if user already exists
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+    });
 
-  return (
-    <main className="page-shell">
-      <div className="section-head">
-        <div>
-          <p className="eyebrow">Driver dashboard</p>
-          <h1>Weekly earnings</h1>
-        </div>
-        <span className="badge">Transparent pay</span>
-      </div>
+    if (existingUser) {
+      return NextResponse.json(
+        { error: 'User already exists' },
+        { status: 409 }
+      );
+    }
 
-      <section className="dashboard-grid">
-        <div className="summary-card">
-          <h2>Summary</h2>
-          <div className="stats-grid">
-            <div className="metric"><span>Tips</span><strong>$182</strong></div>
-            <div className="metric"><span>Delivery fees</span><strong>$118</strong></div>
-            <div className="metric"><span>Net payout</span><strong>$300</strong></div>
-          </div>
-        </div>
+    // Hash password
+    const passwordHash = await hash(password, 10);
 
-        <div className="summary-card">
-          <h2>Current route</h2>
-          <div className="list-wrap">
-            <div className="list-item"><div><h4>Deliver to Maple Lofts</h4><p>Drop: Fire-Roasted Chicken Bowl</p></div><strong>$18</strong></div>
-            <div className="list-item"><div><h4>Pickup at Kite Kitchen</h4><p>ETA 12 min</p></div></div>
-          </div>
-        </div>
+    // Create user
+    const user = await prisma.user.create({
+      data: {
+        email,
+        name,
+        passwordHash,
+        role: role || 'CUSTOMER',
+      },
+    });
 
-        <div className="summary-card">
-          <h2>Platform policy</h2>
-          <ul className="check-list">
-            <li>100% of delivery fees retained</li>
-            <li>100% of tips retained</li>
-            <li>0% platform commission</li>
-          </ul>
-        </div>
-      </section>
-
-      <section className="panel">
-        <h2>Earning breakdown</h2>
-        <div className="list-wrap">
-          {earnings.map((entry) => (
-            <div key={entry.period} className="list-item">
-              <div>
-                <h4>{entry.period}</h4>
-                <p>Tips ${entry.tips} • Fees ${entry.deliveryFees}</p>
-              </div>
-              <strong>${entry.total}</strong>
-            </div>
-          ))}
-        </div>
-      </section>
-    </main>
-  );
+    return NextResponse.json(
+      { message: 'User registered successfully', user: { id: user.id, email: user.email, name: user.name } },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error('Registration error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
 }
