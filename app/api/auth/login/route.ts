@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { hashPassword, isValidRole } from '@/lib/auth';
+import { comparePassword, isValidRole } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
 const schema = z.object({
-  name: z.string().min(2),
   email: z.string().email(),
   password: z.string().min(8),
-  role: z.enum(['customer', 'vendor', 'driver', 'admin']).default('customer'),
 });
 
 export async function POST(request: NextRequest) {
@@ -15,38 +13,31 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const parsed = schema.parse(body);
 
-    if (!isValidRole(parsed.role)) {
-      return NextResponse.json({ message: 'Invalid role.' }, { status: 400 });
-    }
-
-    const existingUser = await prisma.user.findUnique({ where: { email: parsed.email } });
-    if (existingUser) {
-      return NextResponse.json({ message: 'Account already exists.' }, { status: 409 });
-    }
-
-    const passwordHash = await hashPassword(parsed.password);
-    const user = await prisma.user.create({
-      data: {
-        name: parsed.name,
-        email: parsed.email,
-        passwordHash,
-        role: parsed.role,
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-      },
+    const user = await prisma.user.findUnique({
+      where: { email: parsed.email.toLowerCase() },
     });
 
+    if (!user) {
+      return NextResponse.json({ message: 'Invalid credentials.' }, { status: 401 });
+    }
+
+    const validPassword = await comparePassword(parsed.password, user.passwordHash);
+    if (!validPassword) {
+      return NextResponse.json({ message: 'Invalid credentials.' }, { status: 401 });
+    }
+
     return NextResponse.json({
-      message: `${parsed.role} account created successfully.`,
-      user,
-    }, { status: 201 });
+      message: 'Login successful.',
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
   } catch (error) {
     return NextResponse.json({
-      message: error instanceof Error ? error.message : 'Registration failed.',
+      message: error instanceof Error ? error.message : 'Login failed.',
     }, { status: 400 });
   }
 }

@@ -1,24 +1,24 @@
-import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import bcrypt from 'bcryptjs';
 
-export async function GET() {
-  const earnings = await prisma.driverEarning.findMany({
-    orderBy: { createdAt: 'desc' },
-    select: {
-      id: true,
-      periodLabel: true,
-      tipsCents: true,
-      deliveryFeeCents: true,
-      totalCents: true,
-    },
-  });
+export const VALID_ROLES = ['customer', 'vendor', 'driver', 'admin'] as const;
+export type RoleName = (typeof VALID_ROLES)[number];
 
-  const mapped = earnings.map((entry) => ({
-    period: entry.periodLabel,
-    tips: entry.tipsCents / 100,
-    deliveryFees: entry.deliveryFeeCents / 100,
-    total: entry.totalCents / 100,
-  }));
+export const isValidRole = (role: string) => VALID_ROLES.includes(role.toLowerCase() as RoleName);
 
-  return NextResponse.json({ earnings: mapped });
-}
+export const normalizeRole = (role?: string) => {
+  const nextRole = (role ?? 'customer').toLowerCase();
+  switch (nextRole) {
+    case 'vendor':
+      return 'VENDOR';
+    case 'driver':
+      return 'DRIVER';
+    case 'admin':
+      return 'ADMIN';
+    case 'customer':
+    default:
+      return 'CUSTOMER';
+  }
+};
+
+export const hashPassword = async (password: string) => bcrypt.hash(password, 10);
+export const comparePassword = async (password: string, passwordHash: string) => bcrypt.compare(password, passwordHash);

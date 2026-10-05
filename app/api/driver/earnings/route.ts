@@ -9,6 +9,38 @@ const schema = z.object({
   deliveryAddress: z.string().min(4),
 });
 
+export async function GET() {
+  try {
+    const earnings = await prisma.driverEarning.findMany({
+      orderBy: { createdAt: 'desc' },
+      include: {
+        driverProfile: {
+          include: {
+            user: {
+              select: { name: true },
+            },
+          },
+        },
+      },
+    });
+
+    const mapped = earnings.map((entry) => ({
+      id: entry.id,
+      driver: entry.driverProfile.user.name,
+      period: entry.periodLabel,
+      tips: entry.tipsCents / 100,
+      deliveryFees: entry.deliveryFeeCents / 100,
+      total: entry.totalCents / 100,
+    }));
+
+    return NextResponse.json({ earnings: mapped });
+  } catch (error) {
+    return NextResponse.json({
+      message: error instanceof Error ? error.message : 'Unable to load earnings.',
+    }, { status: 500 });
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
