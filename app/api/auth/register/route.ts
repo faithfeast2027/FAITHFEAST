@@ -14,7 +14,7 @@ export default function DriverPage() {
 
   useEffect(() => {
     fetch('/api/driver/earnings')
-      .then((r) => r.json())
+      .then((response) => response.json())
       .then((data) => setEarnings(data.earnings || []));
   }, []);
 

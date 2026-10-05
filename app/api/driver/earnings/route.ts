@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const orders: Array<{ id: string; customerId: string; dropId: string; quantity: number; total: number; status: string }> = [];
-
 export async function POST(request: NextRequest) {
   const body = await request.json();
   const { customerId, dropId, quantity, deliveryAddress } = body;
@@ -19,8 +17,6 @@ export async function POST(request: NextRequest) {
     total,
     status: 'confirmed',
   };
-
-  orders.push(order);
 
   return NextResponse.json({
     message: 'Your order has been placed successfully.',

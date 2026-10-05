@@ -14,8 +14,14 @@
   --shadow: 0 18px 40px rgba(35, 21, 24, 0.12);
 }
 
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   font-family: 'Inter', Arial, sans-serif;
@@ -23,8 +29,17 @@ body {
   color: var(--text);
 }
 
-a { color: inherit; text-decoration: none; }
-button, input, select { font: inherit; }
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
 
 .page-shell {
   max-width: 1200px;
@@ -77,6 +92,7 @@ button, input, select { font: inherit; }
   padding: 0 18px;
   border: 1px solid transparent;
   transition: 0.2s ease;
+  cursor: pointer;
 }
 
 .nav-button,
@@ -109,7 +125,6 @@ button, input, select { font: inherit; }
 .countdown-card,
 .form-card,
 .summary-card,
-.list-card,
 .checkout-card {
   background: var(--panel);
   border: 1px solid rgba(244, 63, 94, 0.08);
@@ -216,13 +231,14 @@ h1 {
 .panel h2,
 .form-card h1,
 .summary-card h2,
-.list-card h2,
 .checkout-card h2 {
   margin: 0;
   font-size: clamp(1.7rem, 2vw, 2.5rem);
 }
 
-.menu-grid, .dashboard-grid, .stats-grid, .orders-grid {
+.menu-grid,
+.dashboard-grid,
+.stats-grid {
   display: grid;
   gap: 18px;
 }
@@ -274,7 +290,8 @@ h1 {
 }
 
 .earnings-list,
-.check-list {
+.check-list,
+.list-wrap {
   display: grid;
   gap: 12px;
   margin-top: 20px;
@@ -369,7 +386,6 @@ h1 {
 }
 
 .summary-card,
-.list-card,
 .checkout-card {
   padding: 22px 20px;
 }
@@ -397,12 +413,6 @@ h1 {
   font-size: 1.7rem;
 }
 
-.list-wrap {
-  display: grid;
-  gap: 12px;
-  margin-top: 18px;
-}
-
 .list-item {
   display: flex;
   justify-content: space-between;
@@ -413,9 +423,14 @@ h1 {
   padding: 14px 16px;
 }
 
-.list-item h4 { margin: 0 0 6px; }
+.list-item h4 {
+  margin: 0 0 6px;
+}
 
-.list-item p { margin: 0; color: var(--muted); }
+.list-item p {
+  margin: 0;
+  color: var(--muted);
+}
 
 .order-card {
   display: grid;
@@ -473,6 +488,7 @@ h1 {
   .form-row {
     grid-template-columns: 1fr;
   }
+
   .topbar {
     flex-direction: column;
     align-items: flex-start;

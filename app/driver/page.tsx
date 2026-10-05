@@ -15,7 +15,7 @@ export default function VendorPage() {
 
   useEffect(() => {
     fetch('/api/vendor/drops')
-      .then((r) => r.json())
+      .then((response) => response.json())
       .then((data) => setDrops(data.drops || []));
   }, []);
 

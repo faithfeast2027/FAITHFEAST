@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useState, useEffect } from 'react';
 
 type Drop = {
   id: string;
@@ -17,7 +17,7 @@ export default function CustomerPage() {
 
   useEffect(() => {
     fetch('/api/vendor/drops')
-      .then((r) => r.json())
+      .then((response) => response.json())
       .then((data) => {
         setDrops(data.drops || []);
         setSelected(data.drops?.[0] || null);
@@ -29,15 +29,17 @@ export default function CustomerPage() {
     if (!selected) return;
 
     const form = new FormData(event.currentTarget);
+    const payload = {
+      dropId: selected.id,
+      customerId: 'customer-001',
+      quantity: Number(form.get('quantity')) || 1,
+      deliveryAddress: form.get('address'),
+    };
+
     const response = await fetch('/api/orders', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        dropId: selected.id,
-        customerId: 'customer-001',
-        quantity: Number(form.get('quantity')) || 1,
-        deliveryAddress: form.get('address'),
-      }),
+      body: JSON.stringify(payload),
     });
 
     const data = await response.json();
@@ -69,7 +71,7 @@ export default function CustomerPage() {
                   border: '1px solid rgba(15, 23, 42, 0.08)',
                   borderRadius: 14,
                   padding: 14,
-                  cursor: 'pointer'
+                  cursor: 'pointer',
                 }}
               >
                 <div className="checkout-line">

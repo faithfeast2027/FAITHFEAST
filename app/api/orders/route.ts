@@ -12,6 +12,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
+
   const nextDrop = {
     id: `drop-${Date.now()}`,
     name: body.name,
@@ -21,5 +22,6 @@ export async function POST(request: NextRequest) {
   };
 
   drops.push(nextDrop);
+
   return NextResponse.json({ message: 'Drop created', drop: nextDrop }, { status: 201 });
 }
