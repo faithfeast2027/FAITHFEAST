@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import SiteLogo from '@/components/SiteLogo';
 
 const menuPreview = [
   {
@@ -37,10 +38,7 @@ export default function HomePage() {
   return (
     <main className="page-shell">
       <header className="topbar">
-        <Link href="/" className="logo" aria-label="Faith Feast home">
-          <span className="logo-mark">F</span>
-          <span>Faith Feast</span>
-        </Link>
+        <SiteLogo priority />
 
         <nav className="nav-links" aria-label="Main navigation">
           <Link href="/" className="nav-button is-active">Home</Link>

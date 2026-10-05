@@ -1,14 +1,12 @@
 import Link from 'next/link';
+import SiteLogo from '@/components/SiteLogo';
 
 export default function LoginPage() {
   return (
     <main className="auth-shell">
       <div className="auth-panel">
         <div className="brand-block">
-          <Link href="/" className="logo" aria-label="Faith Feast home">
-            <span className="logo-mark">F</span>
-            <span>Faith Feast</span>
-          </Link>
+          <SiteLogo size="lg" priority />
           <p>Welcome back. Choose your access point.</p>
         </div>
 

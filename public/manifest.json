@@ -1,11 +1,11 @@
 {
-  "name": "Faith Feast",
+  "name": "Faithfeast",
   "short_name": "FaithFeast",
   "description": "Daily-drop food delivery with 100% driver earnings.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#09090b",
-  "theme_color": "#f59e0b",
+  "background_color": "#f3e3b5",
+  "theme_color": "#dcc085",
   "icons": [
     {
       "src": "/icon-192.png",

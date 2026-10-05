@@ -1,3 +1,5 @@
+import SiteLogo from '@/components/SiteLogo';
+
 const stats = [
   { label: 'Today', value: '$482', tone: 'emerald' },
   { label: 'Routes', value: '12', tone: 'amber' },
@@ -20,6 +22,9 @@ const dailyDrops = [
 export default function DriverPage() {
   return (
     <main className="page-shell driver-shell">
+      <div className="topbar">
+        <SiteLogo priority />
+      </div>
       <header className="dashboard-header">
         <div>
           <p className="eyebrow">Driver portal</p>
