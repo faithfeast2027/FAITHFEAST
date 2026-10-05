@@ -1,45 +1,67 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-export function PwaInstallButton() {
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+type CountdownState = {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+};
+
+export function DailyDropCountdown({ targetDate }: { targetDate: string }) {
+  const [timeLeft, setTimeLeft] = useState<CountdownState>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
-    const handler = (event: Event) => {
-      event.preventDefault();
-      setDeferredPrompt(event);
+    const updateCountdown = () => {
+      const diff = new Date(targetDate).getTime() - Date.now();
+
+      if (diff <= 0) {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      setTimeLeft({ days, hours, minutes, seconds });
     };
 
-    window.addEventListener('beforeinstallprompt', handler);
-    return () => window.removeEventListener('beforeinstallprompt', handler);
-  }, []);
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
 
-  if (!deferredPrompt) return null;
+    return () => clearInterval(interval);
+  }, [targetDate]);
 
-  const handleInstall = async () => {
-    deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
-    setDeferredPrompt(null);
-  };
+  const values = useMemo(
+    () => [
+      { label: 'Days', value: timeLeft.days },
+      { label: 'Hours', value: timeLeft.hours },
+      { label: 'Minutes', value: timeLeft.minutes },
+      { label: 'Seconds', value: timeLeft.seconds },
+    ],
+    [timeLeft]
+  );
 
   return (
-    <div style={{ position: 'fixed', right: 20, bottom: 20, zIndex: 1000 }}>
-      <button
-        onClick={handleInstall}
-        style={{
-          border: 'none',
-          borderRadius: 999,
-          background: '#f43f5e',
-          color: '#fff',
-          padding: '12px 18px',
-          fontWeight: 700,
-          cursor: 'pointer',
-          boxShadow: '0 8px 22px rgba(244, 63, 94, 0.28)',
-        }}
-      >
-        Install Faith Feast
-      </button>
+    <div className="countdown-card" aria-live="polite">
+      <div className="countdown-header">
+        <span className="eyebrow">Next drop</span>
+        <span className="badge">Live</span>
+      </div>
+
+      <div className="time-grid">
+        {values.map((item) => (
+          <div key={item.label} className="time-box">
+            <strong>{String(item.value).padStart(2, '0')}</strong>
+            <span>{item.label}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
+
+export default DailyDropCountdown;
