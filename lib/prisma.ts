@@ -1,7 +1,17 @@
-import bcrypt from 'bcryptjs';
+import { PrismaClient } from '@prisma/client';
 
-export const isValidRole = (role: string) => ['customer', 'vendor', 'driver', 'admin'].includes(role);
+const globalForPrisma = globalThis as unknown as {
+  prisma?: PrismaClient;
+};
 
-export const hashPassword = async (password: string) => bcrypt.hash(password, 10);
+export const prisma =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
+  });
 
-export const comparePassword = async (password: string, passwordHash: string) => bcrypt.compare(password, passwordHash);
+if (process.env.NODE_ENV !== 'production') {
+  globalForPrisma.prisma = prisma;
+}
+
+export default prisma;
