@@ -1,7 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { PwaInstallButton } from '@/components/PwaInstallButton';
+import PwaInstallButton from '@/components/PwaInstallButton';
 
 export const metadata: Metadata = {
   title: 'Faith Feast',
