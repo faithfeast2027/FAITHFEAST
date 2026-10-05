@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" role="img" aria-label="Faith Feast icon">
+  <rect width="192" height="192" rx="40" fill="#fff7f9"/>
+  <circle cx="96" cy="96" r="72" fill="#f43f5e"/>
+  <path d="M58 98c18-31 48-46 79-45-9 13-18 26-24 39-8 18-16 31-32 42-11-12-17-24-23-36Z" fill="#fff" opacity="0.9"/>
+  <circle cx="86" cy="83" r="7" fill="#fbbf24"/>
+  <path d="M112 71c9 12 14 25 14 39 0 17-8 28-19 35-6-10-12-20-14-31 0-17 8-34 19-43Z" fill="#fff" opacity="0.8"/>
+</svg>
