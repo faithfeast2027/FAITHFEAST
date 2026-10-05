@@ -1,7 +1,63 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Faith Feast icon">
-  <rect width="512" height="512" rx="104" fill="#fff7f9"/>
-  <circle cx="256" cy="256" r="192" fill="#f43f5e"/>
-  <path d="M140 265c50-83 129-123 211-120-25 35-49 70-64 105-22 48-43 83-87 114-29-31-46-63-60-99Z" fill="#fff" opacity="0.9"/>
-  <circle cx="224" cy="214" r="20" fill="#fbbf24"/>
-  <path d="M296 182c24 31 37 67 37 104 0 45-21 75-50 93-15-27-32-54-37-84 0-44 21-92 50-113Z" fill="#fff" opacity="0.8"/>
-</svg>
+CREATE TABLE users (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  email TEXT NOT NULL UNIQUE,
+  password_hash TEXT NOT NULL,
+  role TEXT NOT NULL CHECK (role IN ('customer', 'vendor', 'driver', 'admin')),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE vendors (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES users(id),
+  kitchen_name TEXT NOT NULL,
+  address TEXT,
+  status TEXT NOT NULL DEFAULT 'active',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE daily_drops (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  vendor_id UUID NOT NULL REFERENCES vendors(id),
+  name TEXT NOT NULL,
+  description TEXT,
+  price NUMERIC(10,2) NOT NULL,
+  quantity_remaining INTEGER NOT NULL DEFAULT 0,
+  drop_date DATE NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE orders (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  customer_id UUID NOT NULL REFERENCES users(id),
+  drop_id UUID NOT NULL REFERENCES daily_drops(id),
+  quantity INTEGER NOT NULL DEFAULT 1,
+  total_cents INTEGER NOT NULL,
+  delivery_address TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'confirmed',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE driver_profiles (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES users(id),
+  vehicle_type TEXT,
+  rating NUMERIC(3,2) DEFAULT 0,
+  status TEXT NOT NULL DEFAULT 'active'
+);
+
+CREATE TABLE driver_earnings (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  driver_id UUID NOT NULL REFERENCES driver_profiles(id),
+  period_start TIMESTAMPTZ NOT NULL,
+  period_end TIMESTAMPTZ NOT NULL,
+  tips_cents INTEGER NOT NULL DEFAULT 0,
+  delivery_fee_cents INTEGER NOT NULL DEFAULT 0,
+  total_cents INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_daily_drops_drop_date ON daily_drops(drop_date);
+CREATE INDEX idx_orders_customer_id ON orders(customer_id);
+CREATE INDEX idx_orders_drop_id ON orders(drop_id);
+CREATE INDEX idx_driver_earnings_driver_id ON driver_earnings(driver_id);

@@ -1,49 +1,51 @@
-'use client';
+# Faith Feast
 
-import { useEffect, useState } from 'react';
+Faith Feast is a community-first food delivery platform built around a single daily drop model, fair driver pay, and a mobile-first user experience.
 
-export function PwaInstallButton() {
-  const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null);
+## Product vision
 
-  useEffect(() => {
-    const handler = (event: Event) => {
-      event.preventDefault();
-      setDeferredPrompt(event);
-    };
+- Customers receive one curated daily food drop instead of endless scrolling.
+- Vendors list limited-edition kitchen drops with real-time inventory management.
+- Drivers keep 100% of tips and delivery fees, with no platform fee taken from earnings.
+- The app runs as a Progressive Web App so users can install Faith Feast directly on their home screen.
 
-    window.addEventListener('beforeinstallprompt', handler);
+## Stack
 
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handler);
-    };
-  }, []);
+- Next.js 14
+- React
+- Tailwind-inspired CSS with custom styling
+- PostgreSQL schema for users, vendors, drops, orders, and driver payouts
+- PWA manifest and install prompt support
 
-  if (!deferredPrompt) return null;
+## Included workspace
 
-  const handleInstall = async () => {
-    const promptEvent = deferredPrompt as any;
-    promptEvent.prompt();
-    await promptEvent.userChoice;
-    setDeferredPrompt(null);
-  };
+This repository now includes:
 
-  return (
-    <div style={{ position: 'fixed', right: 20, bottom: 20, zIndex: 1000 }}>
-      <button
-        onClick={handleInstall}
-        style={{
-          border: 'none',
-          borderRadius: 999,
-          background: '#f43f5e',
-          color: '#fff',
-          padding: '12px 18px',
-          fontWeight: 700,
-          cursor: 'pointer',
-          boxShadow: '0 8px 22px rgba(244, 63, 94, 0.28)',
-        }}
-      >
-        Install Faith Feast
-      </button>
-    </div>
-  );
-}
+- Homepage countdown and menu preview
+- Customer order flow and checkout experience
+- Vendor dashboard for menu/inventory management
+- Driver dashboard for transparent earnings
+- Login and signup page for multiple account types
+- SQL schema for the product database
+- API route stubs for auth, drops, orders, and driver earnings
+
+## Run locally
+
+```bash
+npm install
+npm run dev
+```
+
+Then open: http://localhost:3000
+
+## Notes
+
+This is a working product prototype and frontend flow. The API routes currently use in-memory mock data for demo purposes, while the `db/schema.sql` file defines the production-ready PostgreSQL structure.
+
+## Future roadmap
+
+- Connect the app to a real Postgres database
+- Add email/password authentication and session management
+- Build vendor inventory editing and admin controls
+- Add actual payment payout flows for drivers
+- Turn the mock dashboard into a full transactional multi-role app
