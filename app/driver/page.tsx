@@ -8,15 +8,18 @@ const stats = [
 ];
 
 const activeRoutes = [
-  { id: 'FF-204', name: 'Kite Kitchen → Northside', eta: '15 min away', status: 'Assigned' },
-  { id: 'FF-187', name: 'Bloom Table → Midtown', eta: '7 min away', status: 'Picking up' },
-  { id: 'FF-219', name: 'Moss & Ember → Riverfront', eta: '22 min away', status: 'Scheduled' },
+  { id: 'FF-204', name: 'Yard Fire Kitchen → Northside', eta: '15 min away', status: 'Assigned' },
+  { id: 'FF-187', name: "Mama Pearl's → Midtown", eta: '7 min away', status: 'Picking up' },
+  { id: 'FF-219', name: 'Port Royal Grill → Riverfront', eta: '22 min away', status: 'Scheduled' },
 ];
 
 const dailyDrops = [
-  { name: 'Fire-Roasted Chicken Bowl', quantity: 22, price: '$18' },
-  { name: 'Crispy Tofu & Greens', quantity: 18, price: '$16' },
-  { name: 'Rosemary Lamb Flatbread', quantity: 12, price: '$22' },
+  { name: 'Jerk Chicken Plate', quantity: 22, price: '$18' },
+  { name: 'Curry Goat', quantity: 14, price: '$22' },
+  { name: 'Oxtail & Butter Beans', quantity: 10, price: '$26' },
+  { name: 'Ackee & Saltfish', quantity: 16, price: '$17' },
+  { name: 'Brown Stew Fish', quantity: 12, price: '$21' },
+  { name: 'Ital Veggie Rundown', quantity: 18, price: '$15' },
 ];
 
 export default function DriverPage() {
