@@ -3,10 +3,13 @@ import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 
 const schema = z.object({
-  name: z.string().min(2),
+  title: z.string().min(2),
+  description: z.string().min(2).default('Fresh daily drop from a local kitchen.'),
   vendor: z.string().min(2),
   price: z.coerce.number().min(1),
   quantity: z.coerce.number().min(1),
+  dropDate: z.string().optional(),
+  remainingQuantity: z.coerce.number().min(0).optional(),
 });
 
 export async function GET() {
@@ -14,10 +17,13 @@ export async function GET() {
     orderBy: { createdAt: 'desc' },
     select: {
       id: true,
-      name: true,
+      title: true,
+      description: true,
       vendor: true,
       price: true,
       quantity: true,
+      remainingQuantity: true,
+      dropDate: true,
     },
   });
 
@@ -31,10 +37,13 @@ export async function POST(request: NextRequest) {
 
     const drop = await prisma.dailyDrop.create({
       data: {
-        name: parsed.name,
+        title: parsed.title,
+        description: parsed.description,
         vendor: parsed.vendor,
         price: parsed.price,
         quantity: parsed.quantity,
+        remainingQuantity: parsed.remainingQuantity ?? parsed.quantity,
+        dropDate: parsed.dropDate ? new Date(parsed.dropDate) : new Date(),
       },
     });
 
