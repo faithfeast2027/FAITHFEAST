@@ -39,40 +39,40 @@ model DriverProfile {
 }
 
 model dailyDrop {
-  id                 String   @id @default(cuid())
-  title              String
-  description        String
-  vendor             String
-  price              Float
-  quantity           Int
-  dropDate           DateTime
-  remainingQuantity  Int      @default(0)
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  orders             Order[]
+  id                String   @id @default(cuid())
+  title             String
+  description       String
+  vendor            String
+  price             Float
+  quantity          Int
+  dropDate          DateTime
+  remainingQuantity Int      @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  orders            Order[]
 }
 
 model Order {
-  id               String     @id @default(cuid())
-  customerId       String
-  customer         User       @relation("CustomerOrders", fields: [customerId], references: [id])
-  dropId           String
-  drop             dailyDrop  @relation(fields: [dropId], references: [id])
-  quantity         Int
-  totalCents       Int
-  deliveryAddress  String
-  status           String     @default("confirmed")
-  createdAt        DateTime   @default(now())
-  updatedAt        DateTime   @updatedAt
+  id              String     @id @default(cuid())
+  customerId      String
+  customer        User       @relation("CustomerOrders", fields: [customerId], references: [id])
+  dropId          String
+  drop            dailyDrop  @relation(fields: [dropId], references: [id])
+  quantity        Int
+  totalCents      Int
+  deliveryAddress String
+  status          String     @default("confirmed")
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
 }
 
 model DriverEarning {
-  id               String         @id @default(cuid())
+  id               String        @id @default(cuid())
   driverId         String
-  driverProfile    DriverProfile  @relation(fields: [driverId], references: [id])
+  driverProfile    DriverProfile @relation(fields: [driverId], references: [id])
   periodLabel      String
   tipsCents        Int
   deliveryFeeCents Int
   totalCents       Int
-  createdAt        DateTime       @default(now())
+  createdAt        DateTime      @default(now())
 }
