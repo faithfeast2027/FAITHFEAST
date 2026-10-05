@@ -11,10 +11,13 @@ type Drop = {
   quantity: number;
 };
 
+const TIP_OPTIONS = [0, 3, 5, 10];
+
 export default function CustomerPage() {
   const [drops, setDrops] = useState<Drop[]>([]);
   const [selected, setSelected] = useState<Drop | null>(null);
   const [status, setStatus] = useState('');
+  const [tip, setTip] = useState(5);
 
   useEffect(() => {
     fetch('/api/vendor/drops')
@@ -102,10 +105,30 @@ export default function CustomerPage() {
                 <p>{selected.quantity} portions available</p>
               </div>
               <div className="total-box">
-                <div className="checkout-line"><span>Food</span><strong>${selected.price}</strong></div>
-                <div className="checkout-line"><span>Delivery</span><strong>$4.00</strong></div>
-                <div className="checkout-line"><span>Total</span><strong>${selected.price + 4}</strong></div>
+                <div className="checkout-line">
+                  <span>Food</span>
+                  <span className="price-stack">
+                    <strong className="free-tag">Free</strong>
+                    <span className="value-tag">${selected.price} value</span>
+                  </span>
+                </div>
+                <div className="checkout-line"><span>Driver tip</span><strong>${tip.toFixed(2)}</strong></div>
+                <div className="checkout-line"><span>You pay</span><strong>${tip.toFixed(2)}</strong></div>
               </div>
+              <fieldset className="tip-options">
+                <legend>Tip your driver (100% goes to them)</legend>
+                {TIP_OPTIONS.map((amount) => (
+                  <button
+                    key={amount}
+                    type="button"
+                    className={tip === amount ? 'mini-btn is-active' : 'mini-btn'}
+                    aria-pressed={tip === amount}
+                    onClick={() => setTip(amount)}
+                  >
+                    {amount === 0 ? 'No tip' : `$${amount}`}
+                  </button>
+                ))}
+              </fieldset>
             </>
           ) : null}
         </aside>

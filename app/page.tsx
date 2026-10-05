@@ -2,51 +2,47 @@ import Image from 'next/image';
 import Link from 'next/link';
 import SiteLogo from '@/components/SiteLogo';
 
-const menuPreview = [
+type MenuItem = {
+  name: string;
+  cuisine: string;
+  vendor: string;
+  value: string;
+  quantity: string;
+  description: string;
+  image?: string;
+};
+
+const menuPreview: MenuItem[] = [
   {
     name: 'Jerk Chicken Plate',
+    cuisine: 'Jamaican',
     vendor: 'Yard Fire Kitchen',
-    price: '$18',
+    value: '$18',
     quantity: '22 plates left',
     description: 'Pimento-smoked jerk chicken, rice and peas, and sweet fried plantain.',
     image: '/dishes/jerk-chicken.png',
   },
   {
-    name: 'Curry Goat',
-    vendor: "Mama Pearl's",
-    price: '$22',
-    quantity: '14 plates left',
-    description: 'Slow-braised goat in Scotch bonnet curry with white rice and steamed cabbage.',
-    image: '/dishes/curry-goat.png',
+    name: 'Classic Cheeseburger & Fries',
+    cuisine: 'American',
+    vendor: 'Main Street Diner',
+    value: '$16',
+    quantity: '20 plates left',
+    description: 'Cheddar cheeseburger on a toasted brioche bun with lettuce, tomato, and golden fries.',
   },
   {
-    name: 'Oxtail & Butter Beans',
-    vendor: "Mama Pearl's",
-    price: '$26',
-    quantity: '10 plates left',
-    description: 'Fall-off-the-bone oxtail in rich brown gravy with butter beans and rice and peas.',
-    image: '/dishes/oxtail.png',
-  },
-  {
-    name: 'Ackee & Saltfish',
-    vendor: 'Blue Mountain Table',
-    price: '$17',
-    quantity: '16 plates left',
-    description: 'The national dish, with sautéed peppers, callaloo, and golden fried dumplings.',
-    image: '/dishes/ackee-saltfish.png',
-  },
-  {
-    name: 'Brown Stew Fish',
-    vendor: 'Port Royal Grill',
-    price: '$21',
-    quantity: '12 plates left',
-    description: 'Whole red snapper in brown stew with peppers, thyme, and sweet festival.',
-    image: '/dishes/brown-stew-fish.png',
+    name: 'Baked Beef Lasagna',
+    cuisine: 'Italian',
+    vendor: 'Nonna Rosa',
+    value: '$19',
+    quantity: '15 plates left',
+    description: 'Layers of pasta, slow-simmered bolognese, ricotta, and bubbling mozzarella.',
   },
   {
     name: 'Ital Veggie Rundown',
+    cuisine: 'Vegetarian',
     vendor: 'Blue Mountain Table',
-    price: '$15',
+    value: '$15',
     quantity: '18 bowls left',
     description: 'Plant-based coconut rundown with pumpkin, chickpeas, and callaloo.',
     image: '/dishes/ital-rundown.png',
@@ -76,11 +72,11 @@ export default function HomePage() {
 
       <section className="hero-section">
         <div className="hero-copy">
-          <p className="eyebrow">Daily drop • fair pay • community-first</p>
-          <h1>Fresh meals, shared with the community.</h1>
+          <p className="eyebrow">Free food • tip your driver • community-first</p>
+          <h1>Free meals, shared with the community.</h1>
           <p className="lead">
-            One curated kitchen drop each day, built to reduce waste, support local cooks,
-            and give drivers a more transparent earning model.
+            Every meal on Faithfeast is free. One curated kitchen drop each day, delivered by
+            local drivers. Please tip your driver, because tips are how they get paid.
           </p>
 
           <div className="hero-actions">
@@ -126,27 +122,43 @@ export default function HomePage() {
         <div className="section-head">
           <div>
             <p className="eyebrow">Today&apos;s kitchen drop</p>
-            <h2>Jamaican menu</h2>
+            <h2>Every meal is free</h2>
           </div>
           <span className="badge">Live inventory</span>
+        </div>
+
+        <div className="tip-banner" role="note">
+          <strong>Meals are always free.</strong>
+          <span>
+            The only thing you pay is an optional tip, and 100% of it goes to your driver.
+            Please tip your driver.
+          </span>
         </div>
 
         <div className="menu-grid">
           {menuPreview.map((item) => (
             <article key={item.name} className="food-card">
-              <div className="card-image">
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  className="card-photo"
-                />
+              <div className={item.image ? 'card-image' : 'card-image sunset card-fallback'}>
+                {item.image ? (
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="card-photo"
+                  />
+                ) : (
+                  <span aria-hidden="true">{item.cuisine}</span>
+                )}
+                <span className="cuisine-tag">{item.cuisine}</span>
               </div>
               <div className="card-body">
                 <div className="card-topline">
                   <span>{item.vendor}</span>
-                  <strong>{item.price}</strong>
+                  <span className="price-stack">
+                    <strong className="free-tag">Free</strong>
+                    <span className="value-tag">{item.value} value</span>
+                  </span>
                 </div>
                 <h3>{item.name}</h3>
                 <p>{item.description}</p>

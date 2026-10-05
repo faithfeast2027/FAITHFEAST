@@ -14,12 +14,10 @@ const activeRoutes = [
 ];
 
 const dailyDrops = [
-  { name: 'Jerk Chicken Plate', quantity: 22, price: '$18' },
-  { name: 'Curry Goat', quantity: 14, price: '$22' },
-  { name: 'Oxtail & Butter Beans', quantity: 10, price: '$26' },
-  { name: 'Ackee & Saltfish', quantity: 16, price: '$17' },
-  { name: 'Brown Stew Fish', quantity: 12, price: '$21' },
-  { name: 'Ital Veggie Rundown', quantity: 18, price: '$15' },
+  { name: 'Jerk Chicken Plate', quantity: 22, value: '$18' },
+  { name: 'Classic Cheeseburger & Fries', quantity: 20, value: '$16' },
+  { name: 'Baked Beef Lasagna', quantity: 15, value: '$19' },
+  { name: 'Ital Veggie Rundown', quantity: 18, value: '$15' },
 ];
 
 export default function DriverPage() {
@@ -91,7 +89,10 @@ export default function DriverPage() {
                     <h3>{drop.name}</h3>
                     <p>{drop.quantity} remaining</p>
                   </div>
-                  <strong>{drop.price}</strong>
+                  <span className="price-stack">
+                    <strong className="free-tag">Free</strong>
+                    <span className="value-tag">{drop.value} value</span>
+                  </span>
                 </div>
               ))}
             </div>

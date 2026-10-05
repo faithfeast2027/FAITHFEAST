@@ -315,8 +315,58 @@ h1, h2, h3, p { margin: 0; }
 
 .menu-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
+}
+
+.tip-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 10px;
+  margin-bottom: 18px;
+  padding: 14px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(212, 165, 116, 0.35);
+  background: rgba(212, 165, 116, 0.1);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.tip-banner strong { color: var(--gold); }
+
+.price-stack {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.free-tag { color: var(--coral); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.value-tag { color: var(--muted); font-size: 0.75rem; text-decoration: line-through; }
+
+.cuisine-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 1;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(15, 15, 15, 0.75);
+  color: var(--text);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.card-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(15, 15, 15, 0.55);
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
 }
 
 .food-card {
