@@ -23,10 +23,7 @@ export function DailyDropCountdown({ targetDate }: { targetDate: string }) {
   const [timeLeft, setTimeLeft] = useState(() => getTimeLeft(targetDate));
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(getTimeLeft(targetDate));
-    }, 1000);
-
+    const timer = setInterval(() => setTimeLeft(getTimeLeft(targetDate)), 1000);
     return () => clearInterval(timer);
   }, [targetDate]);
 
@@ -38,22 +35,10 @@ export function DailyDropCountdown({ targetDate }: { targetDate: string }) {
       </div>
 
       <div className="time-grid">
-        <div className="time-box">
-          <strong>{formatNumber(timeLeft.days)}</strong>
-          <span>Days</span>
-        </div>
-        <div className="time-box">
-          <strong>{formatNumber(timeLeft.hours)}</strong>
-          <span>Hours</span>
-        </div>
-        <div className="time-box">
-          <strong>{formatNumber(timeLeft.minutes)}</strong>
-          <span>Minutes</span>
-        </div>
-        <div className="time-box">
-          <strong>{formatNumber(timeLeft.seconds)}</strong>
-          <span>Seconds</span>
-        </div>
+        <div className="time-box"><strong>{formatNumber(timeLeft.days)}</strong><span>Days</span></div>
+        <div className="time-box"><strong>{formatNumber(timeLeft.hours)}</strong><span>Hours</span></div>
+        <div className="time-box"><strong>{formatNumber(timeLeft.minutes)}</strong><span>Minutes</span></div>
+        <div className="time-box"><strong>{formatNumber(timeLeft.seconds)}</strong><span>Seconds</span></div>
       </div>
     </aside>
   );

@@ -32,37 +32,17 @@ export default function DriverPage() {
         <div className="summary-card">
           <h2>Summary</h2>
           <div className="stats-grid">
-            <div className="metric">
-              <span>Tips</span>
-              <strong>$182</strong>
-            </div>
-            <div className="metric">
-              <span>Delivery fees</span>
-              <strong>$118</strong>
-            </div>
-            <div className="metric">
-              <span>Net payout</span>
-              <strong>$300</strong>
-            </div>
+            <div className="metric"><span>Tips</span><strong>$182</strong></div>
+            <div className="metric"><span>Delivery fees</span><strong>$118</strong></div>
+            <div className="metric"><span>Net payout</span><strong>$300</strong></div>
           </div>
         </div>
 
         <div className="summary-card">
           <h2>Current route</h2>
           <div className="list-wrap">
-            <div className="list-item">
-              <div>
-                <h4>Deliver to Maple Lofts</h4>
-                <p>Drop: Fire-Roasted Chicken Bowl</p>
-              </div>
-              <strong>$18</strong>
-            </div>
-            <div className="list-item">
-              <div>
-                <h4>Pickup at Kite Kitchen</h4>
-                <p>ETA 12 min</p>
-              </div>
-            </div>
+            <div className="list-item"><div><h4>Deliver to Maple Lofts</h4><p>Drop: Fire-Roasted Chicken Bowl</p></div><strong>$18</strong></div>
+            <div className="list-item"><div><h4>Pickup at Kite Kitchen</h4><p>ETA 12 min</p></div></div>
           </div>
         </div>
 

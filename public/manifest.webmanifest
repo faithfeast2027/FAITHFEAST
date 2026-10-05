@@ -9,43 +9,37 @@ Faith Feast is a community-first food delivery platform built around a single da
 - Drivers keep 100% of tips and delivery fees, with no platform fee taken from earnings.
 - The app runs as a Progressive Web App so users can install Faith Feast directly on their home screen.
 
-## Stack
+## Tech stack
 
 - Next.js 14
-- React
-- Tailwind-inspired CSS with custom styling
-- PostgreSQL schema for users, vendors, drops, orders, and driver payouts
-- PWA manifest and install prompt support
+- Prisma + PostgreSQL
+- React + TypeScript
+- PWA support with install prompt
 
-## Included workspace
+## Local setup
 
-This repository now includes:
-
-- Homepage countdown and menu preview
-- Customer order flow and checkout experience
-- Vendor dashboard for menu/inventory management
-- Driver dashboard for transparent earnings
-- Login and signup page for multiple account types
-- SQL schema for the product database
-- API route stubs for auth, drops, orders, and driver earnings
-
-## Run locally
+1. Copy `.env.example` to `.env` and fill in your PostgreSQL connection string.
+2. Start PostgreSQL locally or use a managed database.
+3. Run:
 
 ```bash
 npm install
+npx prisma db push
+npm run db:seed
 npm run dev
 ```
 
 Then open: http://localhost:3000
 
+## Included modules
+
+- Homepage countdown and menu preview
+- Customer order checkout flow
+- Vendor dashboard with drop inventory
+- Driver earnings dashboard
+- Signup flow backed by Prisma
+- Database schema for users, vendors, drops, orders, and driver payouts
+
 ## Notes
 
-This is a working product prototype and frontend flow. The API routes currently use in-memory mock data for demo purposes, while the `db/schema.sql` file defines the production-ready PostgreSQL structure.
-
-## Future roadmap
-
-- Connect the app to a real Postgres database
-- Add email/password authentication and session management
-- Build vendor inventory editing and admin controls
-- Add actual payment payout flows for drivers
-- Turn the mock dashboard into a full transactional multi-role app
+This is the real backend-ready version of the prototype. Authentication is intentionally lightweight and database-backed for local development, while the database schema is ready for production scaling.

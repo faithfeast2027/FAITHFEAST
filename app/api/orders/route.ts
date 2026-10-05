@@ -1,27 +1,47 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import { prisma } from '@/lib/prisma';
 
-const drops = [
-  { id: 'drop-1', name: 'Fire-Roasted Chicken Bowl', vendor: 'Kite Kitchen', price: 18, quantity: 22 },
-  { id: 'drop-2', name: 'Crispy Tofu & Greens', vendor: 'Bloom Table', price: 16, quantity: 18 },
-  { id: 'drop-3', name: 'Rosemary Lamb Flatbread', vendor: 'Moss & Ember', price: 22, quantity: 12 },
-];
+const schema = z.object({
+  name: z.string().min(2),
+  vendor: z.string().min(2),
+  price: z.coerce.number().min(1),
+  quantity: z.coerce.number().min(1),
+});
 
 export async function GET() {
+  const drops = await prisma.dailyDrop.findMany({
+    orderBy: { createdAt: 'desc' },
+    select: {
+      id: true,
+      name: true,
+      vendor: true,
+      price: true,
+      quantity: true,
+    },
+  });
+
   return NextResponse.json({ drops });
 }
 
 export async function POST(request: NextRequest) {
-  const body = await request.json();
+  try {
+    const body = await request.json();
+    const parsed = schema.parse(body);
 
-  const nextDrop = {
-    id: `drop-${Date.now()}`,
-    name: body.name,
-    vendor: body.vendor || 'Faith Feast Vendor',
-    price: Number(body.price || 0),
-    quantity: Number(body.quantity || 0),
-  };
+    const drop = await prisma.dailyDrop.create({
+      data: {
+        name: parsed.name,
+        vendor: parsed.vendor,
+        price: parsed.price,
+        quantity: parsed.quantity,
+      },
+    });
 
-  drops.push(nextDrop);
-
-  return NextResponse.json({ message: 'Drop created', drop: nextDrop }, { status: 201 });
+    return NextResponse.json({ message: 'Drop created', drop }, { status: 201 });
+  } catch (error) {
+    return NextResponse.json({
+      message: error instanceof Error ? error.message : 'Unable to create drop.',
+    }, { status: 400 });
+  }
 }

@@ -33,18 +33,9 @@ export default function VendorPage() {
         <div className="summary-card">
           <h2>Today&apos;s performance</h2>
           <div className="stats-grid">
-            <div className="metric">
-              <span>Orders</span>
-              <strong>24</strong>
-            </div>
-            <div className="metric">
-              <span>Revenue</span>
-              <strong>$412</strong>
-            </div>
-            <div className="metric">
-              <span>On-time</span>
-              <strong>98%</strong>
-            </div>
+            <div className="metric"><span>Orders</span><strong>24</strong></div>
+            <div className="metric"><span>Revenue</span><strong>$412</strong></div>
+            <div className="metric"><span>On-time</span><strong>98%</strong></div>
           </div>
         </div>
 
@@ -66,18 +57,8 @@ export default function VendorPage() {
         <div className="summary-card">
           <h2>Daily actions</h2>
           <div className="list-wrap">
-            <div className="list-item">
-              <div>
-                <h4>Prep schedule</h4>
-                <p>Start at 4:30 PM</p>
-              </div>
-            </div>
-            <div className="list-item">
-              <div>
-                <h4>Driver handoff</h4>
-                <p>3 active routes</p>
-              </div>
-            </div>
+            <div className="list-item"><div><h4>Prep schedule</h4><p>Start at 4:30 PM</p></div></div>
+            <div className="list-item"><div><h4>Driver handoff</h4><p>3 active routes</p></div></div>
           </div>
         </div>
       </section>

@@ -1,12 +1,4 @@
-import withPWA from 'next-pwa';
+/// <reference types="next" />
+/// <reference types="next/image-types/global" />
 
-const config = {
-  reactStrictMode: true,
-};
-
-export default withPWA({
-  dest: 'public',
-  register: true,
-  skipWaiting: true,
-  disable: process.env.NODE_ENV === 'development',
-})(config);
+// NOTE: This file should not be edited.

@@ -1,24 +1,40 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import { comparePassword } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
 
-const users: Array<{ email: string; name: string; password: string; role: string }> = [];
+const schema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+});
 
 export async function POST(request: NextRequest) {
-  const body = await request.json();
-  const { email, password, name, role } = body;
+  try {
+    const body = await request.json();
+    const parsed = schema.parse(body);
 
-  if (!email || !password || !name || !role) {
-    return NextResponse.json({ message: 'Missing required account fields.' }, { status: 400 });
+    const user = await prisma.user.findUnique({ where: { email: parsed.email } });
+    if (!user) {
+      return NextResponse.json({ message: 'Invalid email or password.' }, { status: 401 });
+    }
+
+    const valid = await comparePassword(parsed.password, user.passwordHash);
+    if (!valid) {
+      return NextResponse.json({ message: 'Invalid email or password.' }, { status: 401 });
+    }
+
+    return NextResponse.json({
+      message: 'Login successful.',
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    return NextResponse.json({
+      message: error instanceof Error ? error.message : 'Login failed.',
+    }, { status: 400 });
   }
-
-  const existing = users.find((user) => user.email === String(email));
-  if (existing) {
-    return NextResponse.json({ message: 'Account already exists.' }, { status: 409 });
-  }
-
-  users.push({ email, name, password, role });
-
-  return NextResponse.json({
-    message: `${role} account created successfully.`,
-    user: { email, name, role },
-  });
 }

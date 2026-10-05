@@ -2,24 +2,9 @@ import Link from 'next/link';
 import { DailyDropCountdown } from '@/components/DailyDropCountdown';
 
 const menuPreview = [
-  {
-    name: 'Fire-Roasted Chicken Bowl',
-    vendor: 'Kite Kitchen',
-    price: '$18',
-    eta: 'Limited 22 bowls',
-  },
-  {
-    name: 'Crispy Tofu & Greens',
-    vendor: 'Bloom Table',
-    price: '$16',
-    eta: 'Limited 18 bowls',
-  },
-  {
-    name: 'Rosemary Lamb Flatbread',
-    vendor: 'Moss & Ember',
-    price: '$22',
-    eta: 'Limited 12 orders',
-  },
+  { name: 'Fire-Roasted Chicken Bowl', vendor: 'Kite Kitchen', price: '$18', eta: 'Limited 22 bowls' },
+  { name: 'Crispy Tofu & Greens', vendor: 'Bloom Table', price: '$16', eta: 'Limited 18 bowls' },
+  { name: 'Rosemary Lamb Flatbread', vendor: 'Moss & Ember', price: '$22', eta: 'Limited 12 orders' },
 ];
 
 const earningsBreakdown = [
@@ -36,11 +21,10 @@ export default function HomePage() {
           <p className="eyebrow">Daily drop • fair pay • community-first</p>
           <h1>Faith Feast</h1>
           <p className="lead">
-            One curated daily drop, designed to reduce waste, celebrate local kitchens, and
-            keep drivers paid transparently.
+            One curated daily drop, designed to reduce waste, celebrate local kitchens, and keep drivers paid transparently.
           </p>
           <div className="hero-actions">
-            <Link href="#today" className="primary-btn">View today’s drop</Link>
+            <Link href="#today" className="primary-btn">View today&apos;s drop</Link>
             <Link href="#drivers" className="secondary-btn">Driver model</Link>
           </div>
         </div>
