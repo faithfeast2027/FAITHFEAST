@@ -1,29 +1,55 @@
+import Image from 'next/image';
 import Link from 'next/link';
+import SiteLogo from '@/components/SiteLogo';
 
 const menuPreview = [
   {
-    name: 'Fire-Roasted Chicken Bowl',
-    vendor: 'Kite Kitchen',
+    name: 'Jerk Chicken Plate',
+    vendor: 'Yard Fire Kitchen',
     price: '$18',
-    quantity: '22 bowls left',
-    description: 'Smoky chicken, saffron rice, greens, and chili-lime drizzle.',
-    accent: 'sunset',
+    quantity: '22 plates left',
+    description: 'Pimento-smoked jerk chicken, rice and peas, and sweet fried plantain.',
+    image: '/dishes/jerk-chicken.png',
   },
   {
-    name: 'Crispy Tofu & Greens',
-    vendor: 'Bloom Table',
-    price: '$16',
-    quantity: '18 bowls left',
-    description: 'Crisp tofu, seasonal greens, roasted grains, and bright tahini.',
-    accent: 'sage',
-  },
-  {
-    name: 'Rosemary Lamb Flatbread',
-    vendor: 'Moss & Ember',
+    name: 'Curry Goat',
+    vendor: "Mama Pearl's",
     price: '$22',
-    quantity: '12 orders left',
-    description: 'Herb-roasted lamb, charred onion, feta, and mint yogurt.',
-    accent: 'gold',
+    quantity: '14 plates left',
+    description: 'Slow-braised goat in Scotch bonnet curry with white rice and steamed cabbage.',
+    image: '/dishes/curry-goat.png',
+  },
+  {
+    name: 'Oxtail & Butter Beans',
+    vendor: "Mama Pearl's",
+    price: '$26',
+    quantity: '10 plates left',
+    description: 'Fall-off-the-bone oxtail in rich brown gravy with butter beans and rice and peas.',
+    image: '/dishes/oxtail.png',
+  },
+  {
+    name: 'Ackee & Saltfish',
+    vendor: 'Blue Mountain Table',
+    price: '$17',
+    quantity: '16 plates left',
+    description: 'The national dish, with sautéed peppers, callaloo, and golden fried dumplings.',
+    image: '/dishes/ackee-saltfish.png',
+  },
+  {
+    name: 'Brown Stew Fish',
+    vendor: 'Port Royal Grill',
+    price: '$21',
+    quantity: '12 plates left',
+    description: 'Whole red snapper in brown stew with peppers, thyme, and sweet festival.',
+    image: '/dishes/brown-stew-fish.png',
+  },
+  {
+    name: 'Ital Veggie Rundown',
+    vendor: 'Blue Mountain Table',
+    price: '$15',
+    quantity: '18 bowls left',
+    description: 'Plant-based coconut rundown with pumpkin, chickpeas, and callaloo.',
+    image: '/dishes/ital-rundown.png',
   },
 ];
 
@@ -37,10 +63,7 @@ export default function HomePage() {
   return (
     <main className="page-shell">
       <header className="topbar">
-        <Link href="/" className="logo" aria-label="Faith Feast home">
-          <span className="logo-mark">F</span>
-          <span>Faith Feast</span>
-        </Link>
+        <SiteLogo priority />
 
         <nav className="nav-links" aria-label="Main navigation">
           <Link href="/" className="nav-button is-active">Home</Link>
@@ -103,7 +126,7 @@ export default function HomePage() {
         <div className="section-head">
           <div>
             <p className="eyebrow">Today&apos;s kitchen drop</p>
-            <h2>Menu preview</h2>
+            <h2>Jamaican menu</h2>
           </div>
           <span className="badge">Live inventory</span>
         </div>
@@ -111,7 +134,15 @@ export default function HomePage() {
         <div className="menu-grid">
           {menuPreview.map((item) => (
             <article key={item.name} className="food-card">
-              <div className={`card-image ${item.accent}`} aria-hidden="true" />
+              <div className="card-image">
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="card-photo"
+                />
+              </div>
               <div className="card-body">
                 <div className="card-topline">
                   <span>{item.vendor}</span>

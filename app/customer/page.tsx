@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { FormEvent, useState } from 'react';
+import SiteLogo from '@/components/SiteLogo';
 
 export default function LoginPage() {
   const [role, setRole] = useState('customer');
@@ -30,6 +31,7 @@ export default function LoginPage() {
   return (
     <main className="auth-shell">
       <div className="form-card">
+        <SiteLogo priority />
         <p className="eyebrow">Access portal</p>
         <h1>Sign up or log in</h1>
         <p>Customers order daily drops, vendors manage inventory, and drivers track earnings.</p>

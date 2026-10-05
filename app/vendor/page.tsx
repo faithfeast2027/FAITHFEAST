@@ -1,6 +1,7 @@
 'use client';
 
 import { FormEvent, useEffect, useState } from 'react';
+import SiteLogo from '@/components/SiteLogo';
 
 type Drop = {
   id: string;
@@ -48,6 +49,9 @@ export default function CustomerPage() {
 
   return (
     <main className="page-shell">
+      <div className="topbar">
+        <SiteLogo priority />
+      </div>
       <div className="section-head">
         <div>
           <p className="eyebrow">Customer portal</p>
