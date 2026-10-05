@@ -1,7 +1,18 @@
-import { PrismaClient } from '@prisma/client';
+generator client {
+  provider = "prisma-client-js"
+}
 
-const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
 
-export const prisma = globalForPrisma.prisma ?? new PrismaClient();
-
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+model daily_drops {
+  id                 String   @id @default(uuid())
+  drop_date          DateTime
+  title              String
+  description        String
+  price              Float
+  remaining_quantity Int
+  created_at         DateTime @default(now())
+}
