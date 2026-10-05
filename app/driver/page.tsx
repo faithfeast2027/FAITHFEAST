@@ -1,87 +1,124 @@
-'use client';
+const stats = [
+  { label: 'Today', value: '$482', tone: 'emerald' },
+  { label: 'Routes', value: '12', tone: 'amber' },
+  { label: 'Drop rate', value: '96%', tone: 'rose' },
+  { label: 'Avg. time', value: '24m', tone: 'sky' },
+];
 
-import { useEffect, useState } from 'react';
+const activeRoutes = [
+  { id: 'FF-204', name: 'Kite Kitchen → Northside', eta: '15 min away', status: 'Assigned' },
+  { id: 'FF-187', name: 'Bloom Table → Midtown', eta: '7 min away', status: 'Picking up' },
+  { id: 'FF-219', name: 'Moss & Ember → Riverfront', eta: '22 min away', status: 'Scheduled' },
+];
 
-type Drop = {
-  id: string;
-  name: string;
-  vendor: string;
-  price: number;
-  quantity: number;
-};
+const dailyDrops = [
+  { name: 'Fire-Roasted Chicken Bowl', quantity: 22, price: '$18' },
+  { name: 'Crispy Tofu & Greens', quantity: 18, price: '$16' },
+  { name: 'Rosemary Lamb Flatbread', quantity: 12, price: '$22' },
+];
 
-export default function VendorPage() {
-  const [drops, setDrops] = useState<Drop[]>([]);
-
-  useEffect(() => {
-    fetch('/api/vendor/drops')
-      .then((response) => response.json())
-      .then((data) => setDrops(data.drops || []));
-  }, []);
-
+export default function DriverPage() {
   return (
-    <main className="page-shell">
-      <div className="section-head">
+    <main className="page-shell driver-shell">
+      <header className="dashboard-header">
         <div>
-          <p className="eyebrow">Vendor dashboard</p>
-          <h1>Kitchen operations</h1>
-        </div>
-        <span className="badge">Drop live</span>
-      </div>
-
-      <section className="dashboard-grid">
-        <div className="summary-card">
-          <h2>Today&apos;s performance</h2>
-          <div className="stats-grid">
-            <div className="metric"><span>Orders</span><strong>24</strong></div>
-            <div className="metric"><span>Revenue</span><strong>$412</strong></div>
-            <div className="metric"><span>On-time</span><strong>98%</strong></div>
-          </div>
+          <p className="eyebrow">Driver portal</p>
+          <h1>Good evening, Jordan.</h1>
         </div>
 
-        <div className="summary-card">
-          <h2>Inventory status</h2>
-          <div className="list-wrap">
-            {drops.map((drop) => (
-              <div key={drop.id} className="list-item">
-                <div>
-                  <h4>{drop.name}</h4>
-                  <p>{drop.quantity} portions remaining</p>
-                </div>
-                <strong>${drop.price}</strong>
-              </div>
-            ))}
-          </div>
+        <div className="header-actions">
+          <span className="status-pill">Online</span>
+          <button type="button" className="primary-btn">View route map</button>
         </div>
+      </header>
 
-        <div className="summary-card">
-          <h2>Daily actions</h2>
-          <div className="list-wrap">
-            <div className="list-item"><div><h4>Prep schedule</h4><p>Start at 4:30 PM</p></div></div>
-            <div className="list-item"><div><h4>Driver handoff</h4><p>3 active routes</p></div></div>
-          </div>
-        </div>
+      <section className="stats-grid four-up">
+        {stats.map((stat) => (
+          <article key={stat.label} className={`metric-card ${stat.tone}`}>
+            <span>{stat.label}</span>
+            <strong>{stat.value}</strong>
+          </article>
+        ))}
       </section>
 
-      <section className="panel">
-        <div className="section-head">
-          <h2>Active drop list</h2>
-          <button className="primary-btn" type="button">Add new drop</button>
-        </div>
-        <div className="list-wrap">
-          {drops.map((drop) => (
-            <div key={drop.id} className="list-item">
+      <section className="driver-layout">
+        <div className="driver-column main-column">
+          <div className="content-panel">
+            <div className="section-head compact">
               <div>
-                <h4>{drop.name}</h4>
-                <p>{drop.vendor}</p>
+                <p className="eyebrow">Active routes</p>
+                <h2>Assignments</h2>
               </div>
-              <div style={{ textAlign: 'right' }}>
-                <strong>${drop.price}</strong>
-                <p>{drop.quantity} left</p>
+              <span className="badge">3 live</span>
+            </div>
+
+            <div className="route-list">
+              {activeRoutes.map((route) => (
+                <div key={route.id} className="route-item">
+                  <div>
+                    <p className="route-id">{route.id}</p>
+                    <h3>{route.name}</h3>
+                  </div>
+                  <div className="route-meta">
+                    <span>{route.eta}</span>
+                    <strong>{route.status}</strong>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="content-panel">
+            <div className="section-head compact">
+              <div>
+                <p className="eyebrow">Daily drops</p>
+                <h2>Inventory nearby</h2>
               </div>
             </div>
-          ))}
+
+            <div className="drop-list">
+              {dailyDrops.map((drop) => (
+                <div key={drop.name} className="drop-row">
+                  <div>
+                    <h3>{drop.name}</h3>
+                    <p>{drop.quantity} remaining</p>
+                  </div>
+                  <strong>{drop.price}</strong>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
+
+        <aside className="driver-column side-column">
+          <div className="content-panel summary-panel">
+            <p className="eyebrow">Today's payout</p>
+            <h2>$142.80</h2>
+            <ul className="summary-list">
+              <li>
+                <span>Base delivery</span>
+                <strong>$96.00</strong>
+              </li>
+              <li>
+                <span>Tips</span>
+                <strong>$32.80</strong>
+              </li>
+              <li>
+                <span>Bonuses</span>
+                <strong>$14.00</strong>
+              </li>
+            </ul>
+          </div>
+
+          <div className="content-panel quick-panel">
+            <p className="eyebrow">Quick actions</p>
+            <div className="action-stack">
+              <button type="button" className="secondary-btn">Start shift</button>
+              <button type="button" className="secondary-btn">Check earnings</button>
+              <button type="button" className="secondary-btn">Message support</button>
+            </div>
+          </div>
+        </aside>
       </section>
     </main>
   );

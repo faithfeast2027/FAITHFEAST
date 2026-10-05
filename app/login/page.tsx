@@ -1,87 +1,86 @@
 import Link from 'next/link';
-import { DailyDropCountdown } from '@/components/DailyDropCountdown';
 
-const menuPreview = [
-  { name: 'Fire-Roasted Chicken Bowl', vendor: 'Kite Kitchen', price: '$18', eta: 'Limited 22 bowls' },
-  { name: 'Crispy Tofu & Greens', vendor: 'Bloom Table', price: '$16', eta: 'Limited 18 bowls' },
-  { name: 'Rosemary Lamb Flatbread', vendor: 'Moss & Ember', price: '$22', eta: 'Limited 12 orders' },
-];
-
-const earningsBreakdown = [
-  { label: 'Tip payout', value: '100%', tone: 'rose' },
-  { label: 'Delivery fee', value: '100%', tone: 'gold' },
-  { label: 'Platform fee', value: '0%', tone: 'green' },
-];
-
-export default function HomePage() {
+export default function LoginPage() {
   return (
-    <main className="page-shell">
-      <header className="hero">
-        <div className="hero-copy">
-          <p className="eyebrow">Daily drop • fair pay • community-first</p>
-          <h1>Faith Feast</h1>
-          <p className="lead">
-            One curated daily drop, designed to reduce waste, celebrate local kitchens, and keep drivers paid transparently.
-          </p>
-          <div className="hero-actions">
-            <Link href="#today" className="primary-btn">View today&apos;s drop</Link>
-            <Link href="#drivers" className="secondary-btn">Driver model</Link>
-          </div>
+    <main className="auth-shell">
+      <div className="auth-panel">
+        <div className="brand-block">
+          <Link href="/" className="logo" aria-label="Faith Feast home">
+            <span className="logo-mark">F</span>
+            <span>Faith Feast</span>
+          </Link>
+          <p>Welcome back. Choose your access point.</p>
         </div>
 
-        <DailyDropCountdown targetDate="2027-02-21T18:00:00Z" />
-      </header>
-
-      <section id="today" className="panel">
-        <div className="section-head">
-          <div>
-            <p className="eyebrow">Today&apos;s kitchen drop</p>
-            <h2>Menu preview</h2>
-          </div>
-          <span className="badge">Live inventory</span>
+        <div className="auth-tabs" role="tablist" aria-label="Login type">
+          <button type="button" className="auth-tab active" aria-pressed="true">
+            Customer
+          </button>
+          <button type="button" className="auth-tab" aria-pressed="false">
+            Driver
+          </button>
         </div>
 
-        <div className="menu-grid">
-          {menuPreview.map((item) => (
-            <article key={item.name} className="food-card">
-              <div className="card-image" aria-hidden="true" />
-              <div className="card-body">
-                <div className="card-topline">
-                  <span>{item.vendor}</span>
-                  <strong>{item.price}</strong>
-                </div>
-                <h3>{item.name}</h3>
-                <p>{item.eta}</p>
+        <div className="auth-card-grid">
+          <section className="auth-card customer-card" aria-label="Customer login">
+            <div className="auth-card-header">
+              <span className="chip chip-green">Customer</span>
+              <span className="auth-card-subtitle">Order your next drop</span>
+            </div>
+
+            <form className="auth-form">
+              <label className="field-label">
+                Email address
+                <input type="email" placeholder="you@example.com" />
+              </label>
+
+              <label className="field-label">
+                Password
+                <input type="password" placeholder="Enter your password" />
+              </label>
+
+              <div className="inline-row">
+                <label className="checkbox-label">
+                  <input type="checkbox" />
+                  <span>Remember me</span>
+                </label>
+                <Link href="/login" className="text-link">Forgot password?</Link>
               </div>
-            </article>
-          ))}
-        </div>
-      </section>
 
-      <section id="drivers" className="info-grid">
-        <div className="panel">
-          <p className="eyebrow">Driver earnings</p>
-          <h2>100% of tips and delivery fees stay with the driver.</h2>
-          <div className="earnings-list">
-            {earningsBreakdown.map((item) => (
-              <div key={item.label} className={`earning-row ${item.tone}`}>
-                <span>{item.label}</span>
-                <strong>{item.value}</strong>
+              <button type="submit" className="primary-btn auth-submit">Sign in</button>
+            </form>
+          </section>
+
+          <section className="auth-card driver-card is-highlighted" id="drivers" aria-label="Driver login">
+            <div className="auth-card-header">
+              <span className="chip chip-amber">Driver</span>
+              <span className="auth-card-subtitle">Pick up and deliver</span>
+            </div>
+
+            <form className="auth-form">
+              <label className="field-label">
+                Driver email
+                <input type="email" placeholder="driver@faithfeast.com" />
+              </label>
+
+              <label className="field-label">
+                Access code
+                <input type="password" placeholder="••••••••" />
+              </label>
+
+              <div className="inline-row">
+                <label className="checkbox-label">
+                  <input type="checkbox" defaultChecked />
+                  <span>Keep me signed in</span>
+                </label>
+                <Link href="/driver" className="text-link">Open dashboard</Link>
               </div>
-            ))}
-          </div>
-        </div>
 
-        <div className="panel">
-          <p className="eyebrow">Vendor + customer flow</p>
-          <h2>Simple sign-up and login for both sides of the marketplace.</h2>
-          <ul className="check-list">
-            <li>Customer account creates orders for the next drop.</li>
-            <li>Vendor dashboard manages kitchen inventory and prep timing.</li>
-            <li>Driver dashboard receives delivery assignments instantly.</li>
-          </ul>
+              <button type="submit" className="primary-btn auth-submit driver-submit">Sign in as driver</button>
+            </form>
+          </section>
         </div>
-      </section>
+      </div>
     </main>
   );
 }
